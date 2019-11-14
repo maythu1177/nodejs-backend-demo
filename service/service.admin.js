@@ -12,6 +12,10 @@ const addFood = (foodName,image,price,size,menuId) =>{
      return demodb.addFood(foodName,image,price,size,menuId)
 }
 
+const readFood = (menuId) =>{
+    return demodb.readFood(menuId)
+}
+
 module.exports= { 
-    addMenu, readMenu,addFood,
+    addMenu, readMenu,addFood,readFood
 }

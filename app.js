@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser= require("body-parser")
 const cors = require("cors")
+const path = require("path")
 
 const appRouter = require("./route")
 
@@ -19,7 +20,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.use('/files',express.static('public'))
+app.use('/uploads',express.static('public'))
+app.use(express.static(path.join(__dirname,'public')))
 app.use('/api/v1',appRouter)
 
 app.listen(port,()=>{

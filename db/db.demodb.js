@@ -38,9 +38,12 @@ const addFood =(foodName,image,price,size,menuId)=>{
     mypool.end()
 }
 
-
+const readFood =(menuId)=>{
+    query = util.promisify(mypool.query).bind(mypool)
+    return query(`SELECT * FROM food where menu_id = ${menuId}`)
+}
 
 
 module.exports= { 
-    register,login,addMenu,readMenu,addFood
+    register,login,addMenu,readMenu,addFood,readFood
 }
