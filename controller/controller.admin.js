@@ -1,21 +1,23 @@
 const { adminService } = require('../service')
 const response = require('../model/response')
-
 const multer = require('multer')
-const path = require('path')
 
+const maxSize = 20480000;
 
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-      callback(null, './public/uploads');
+        callback(null, './public/uploads');
     },
     filename: function (req, file, callback) {
         callback(null, Date.now() + file.originalname);
     }
 });
 
-const upload = multer({storage:storage}).single('foodImage')
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: maxSize }
+}).single('foodImage')
 
 const addMenu = (req, res) => {
     const menuName = req.body.menuName
@@ -26,23 +28,10 @@ const addMenu = (req, res) => {
     })
 }
 
-const readMenu = (req, res) => {
-    adminService.readMenu().then(data => {
-        if (data.length) {
-            res.json(response({ success: true, payload: data }))
-        }
-        else {
-            res.json(response({ success: false, message: "no menu" }))
-        }
-    }).catch(err => {
-        res.json(response({ success: false, message: err }))
-    })
-}
-
 const addFood = (req, res) => {
     upload(req, res, function (err) {
         if (err) {
-            console.log(err)
+            console.log(err, 'multer error')
             res.json(response({ success: false, message: err }))
         }
         else {
@@ -61,20 +50,53 @@ const addFood = (req, res) => {
     })
 }
 
-const readFood = (req, res) => {
+const updateMenu = (req, res) => {
     const menuId = req.params.menuId
-    adminService.readFood(menuId).then(data => {
-        if (data.length) {
-            res.json(response({ success: true, payload: data }))
-        }
-        else {
-            res.json(response({ success: false, message: 'no data' }))
-        }
+    const menuName = req.body.menuName
+    adminService.updateMenu(menuId, menuName).then(data => {
+        res.json(response({ success: true, message: "success" }))
     }).catch(err => {
         res.json(response({ success: false, message: err }))
     })
 }
 
+const updateFood = (req, res) => {
+    upload(req, res, function (err) {
+        if (err) {
+            console.log(err, 'multer error')
+            res.json(response({ success: false, message: err }))
+        }
+        else if (req.file) {
+            console.log('hhhh')
+            const foodId = req.params.foodId
+            const foodName = req.body.foodName
+            const image = req.file.path
+            const price = req.body.price
+            const size = req.body.size
+            const menuId = req.body.menuId
+            adminService.updateFood(foodId, foodName, image,price, size, menuId).then(data => {
+                res.json(response({ success: true, message: "success" }))
+            }).catch(err => {
+                res.json(response({ success: false, message: err }))
+            })
+        }
+        // else {
+        //     const foodId = req.params.foodId
+        //     const foodName = req.body.foodName
+        //     const image =
+        //     const price = req.body.price
+        //     const size = req.body.size
+        //     const menuId = req.body.menuId
+        //     adminService.updateFood(foodId, foodName, price, image, size, menuId).then(data => {
+        //         res.json(response({ success: true, message: "success" }))
+        //     }).catch(err => {
+        //         res.json(response({ success: false, message: err }))
+        //     })
+        // }
+
+    })
+}
+
 module.exports = {
-    addMenu, readMenu, addFood, readFood
+    addMenu, addFood, updateMenu, updateFood
 }

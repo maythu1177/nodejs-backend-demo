@@ -13,7 +13,6 @@ const mypool = mysql2.createConnection({
 const register = (username,email,hash,phone) =>{
 query = util.promisify(mypool.query).bind(mypool)
    return query(`INSERT INTO admin (name,email,password,phone) VALUES (?,?,?,?)`,[username,email,hash,phone])
-   mypool.end()
 }
 
 const login = (email,password) =>{
@@ -32,10 +31,14 @@ const readMenu = () =>{
   return query(`SELECT * FROM menu`)
 }
 
+const updateMenu = (menuId,menuName) =>{
+  query = util.promisify(mypool.query).bind(mypool)
+  return query (`UPDATE menu SET menu_name = '${menuName}' WHERE menu_id = ${menuId}`)
+}
+
 const addFood =(foodName,image,price,size,menuId)=>{
     query = util.promisify(mypool.query).bind(mypool)
     return query(`INSERT INTO food(food_name,image,price,size,menu_id) VALUES (?,?,?,?,?)`,[foodName,image,price,size,menuId])
-    mypool.end()
 }
 
 const readFood =(menuId)=>{
@@ -43,7 +46,19 @@ const readFood =(menuId)=>{
     return query(`SELECT * FROM food where menu_id = ${menuId}`)
 }
 
+const updateFood =(foodId,foodName,image,price,size,menuId)=>{
+    query = util.promisify(mypool.query).bind(mypool)
+    const food = {
+        food_name:foodName,
+        image:image,
+        price:price,
+        size:size,
+        menu_id:menuId
+    }
+    return query(`UPDATE food SET ? WHRE food_id= ${foodId}`,food)
+}
+
 
 module.exports= { 
-    register,login,addMenu,readMenu,addFood,readFood
+    register,login,addMenu,readMenu,addFood,readFood,updateMenu,updateFood
 }
