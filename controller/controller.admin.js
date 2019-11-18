@@ -35,7 +35,6 @@ const addFood = (req, res) => {
             res.json(response({ success: false, message: err }))
         }
         else {
-            console.log(req.file)
             const foodName = req.body.foodName
             const price = req.body.price
             const size = req.body.size
@@ -66,7 +65,7 @@ const updateFood = (req, res) => {
             console.log(err, 'multer error')
             res.json(response({ success: false, message: err }))
         }
-        else if (req.file) {
+        else {
             console.log('hhhh')
             const foodId = req.params.foodId
             const foodName = req.body.foodName
@@ -74,29 +73,34 @@ const updateFood = (req, res) => {
             const price = req.body.price
             const size = req.body.size
             const menuId = req.body.menuId
-            adminService.updateFood(foodId, foodName, image,price, size, menuId).then(data => {
+            adminService.updateFood(foodId, foodName, image, price, size, menuId).then(data => {
                 res.json(response({ success: true, message: "success" }))
             }).catch(err => {
                 res.json(response({ success: false, message: err }))
             })
         }
-        // else {
-        //     const foodId = req.params.foodId
-        //     const foodName = req.body.foodName
-        //     const image =
-        //     const price = req.body.price
-        //     const size = req.body.size
-        //     const menuId = req.body.menuId
-        //     adminService.updateFood(foodId, foodName, price, image, size, menuId).then(data => {
-        //         res.json(response({ success: true, message: "success" }))
-        //     }).catch(err => {
-        //         res.json(response({ success: false, message: err }))
-        //     })
-        // }
+    })
+}
 
+const addContact = (req, res) => {
+    const address = req.body.address
+    const openingTime = req.body.openingTime
+    const phone = req.body.phone
+    adminService.addContact(address, openingTime, phone).then(data => {
+        res.json(response({ success: true, message: "success" }))
+    }).catch(err => {
+        res.json(response({ success: false, message: err }))
+    })
+}
+
+const readContact = (req,res) =>{
+    adminService.readContact().then(data=>{
+        res.json(response({ success:true , payload:data }))
+    }).catch(err =>{
+        res.json(response({success:false,message:err}))
     })
 }
 
 module.exports = {
-    addMenu, addFood, updateMenu, updateFood
+    addMenu, addFood, updateMenu, updateFood, addContact, readContact
 }

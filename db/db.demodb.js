@@ -48,17 +48,21 @@ const readFood =(menuId)=>{
 
 const updateFood =(foodId,foodName,image,price,size,menuId)=>{
     query = util.promisify(mypool.query).bind(mypool)
-    const food = {
-        food_name:foodName,
-        image:image,
-        price:price,
-        size:size,
-        menu_id:menuId
-    }
-    return query(`UPDATE food SET ? WHRE food_id= ${foodId}`,food)
+    return query(`UPDATE food SET image='${image}', food_name='${foodName}', price='${price}', size='${size}' , menu_id=${menuId} 
+    WHERE food_id= ${foodId}`)
+}
+
+const addContact = (address,openingTime,phone) => {
+    query = util.promisify(mypool.query).bind(mypool)
+    return query(`INSERT INTO contact (address,opening_time,phone) VALUES (?,?,?)`,[address,openingTime,phone])
+}
+
+const readContact = ()=>{
+    query = util.promisify(mypool.query).bind(mypool)
+    return query(`SELECT * FROM contact`)
 }
 
 
 module.exports= { 
-    register,login,addMenu,readMenu,addFood,readFood,updateMenu,updateFood
+    register,login,addMenu,readMenu,addFood,readFood,updateMenu,updateFood,addContact,readContact
 }

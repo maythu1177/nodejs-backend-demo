@@ -16,6 +16,14 @@ const updateFood = (foodId,foodName,image,price,size,menuId)=>{
     return demodb.updateFood(foodId,foodName,image,price,size,menuId)
 }
 
+const addContact = (address,openingTime,phone)=>{
+    return demodb.addContact(address,openingTime,phone)
+}
+
+const readContact = () =>{
+    return demodb.readContact()
+}
+
 module.exports= { 
-    addMenu,addFood,updateMenu,updateFood
+    addMenu,addFood,updateMenu,updateFood,addContact,readContact
 }
