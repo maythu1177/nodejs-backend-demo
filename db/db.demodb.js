@@ -62,7 +62,11 @@ const readContact = ()=>{
     return query(`SELECT * FROM contact`)
 }
 
+const updateContact = (address,openingTime,phone,contactId)=>{
+    query = util.promisify(mypool.query).bind(mypool)
+    return query(`UPDATE contact SET address='${address}', phone='${phone}', opening_time='${openingTime}' WHERE contact_id= ${contactId}`)
+}
 
 module.exports= { 
-    register,login,addMenu,readMenu,addFood,readFood,updateMenu,updateFood,addContact,readContact
+    register,login,addMenu,readMenu,addFood,readFood,updateMenu,updateFood,addContact,readContact,updateContact
 }

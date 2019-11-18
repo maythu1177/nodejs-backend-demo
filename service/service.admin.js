@@ -24,6 +24,10 @@ const readContact = () =>{
     return demodb.readContact()
 }
 
+const updateContact = (address,openingTime,phone,contactId) =>{
+    return demodb.updateContact(address,openingTime,phone,contactId)
+}
+
 module.exports= { 
-    addMenu,addFood,updateMenu,updateFood,addContact,readContact
+    addMenu,addFood,updateMenu,updateFood,addContact,readContact,updateContact
 }

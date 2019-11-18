@@ -7,6 +7,7 @@ router.use(authMiddleware)
 
 router.get('/getContact',adminController.readContact)
 router.post('/addContact',adminController.addContact)
+router.put('/updateContact/:contactId',adminController.updateContact)
 router.put('/updateMenu/:menuId',adminController.updateMenu)
 router.put('/updateFood/:foodId',adminController.updateFood)
 router.post('/addMenu',adminController.addMenu)

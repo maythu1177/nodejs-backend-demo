@@ -66,7 +66,6 @@ const updateFood = (req, res) => {
             res.json(response({ success: false, message: err }))
         }
         else {
-            console.log('hhhh')
             const foodId = req.params.foodId
             const foodName = req.body.foodName
             const image = req.file.path
@@ -97,10 +96,22 @@ const readContact = (req,res) =>{
     adminService.readContact().then(data=>{
         res.json(response({ success:true , payload:data }))
     }).catch(err =>{
-        res.json(response({success:false,message:err}))
+        res.json(response({success:false, message:err}))
+    })
+}
+
+const updateContact = (req,res) =>{
+    const contactId=req.params.contactId
+     const address = req.body.address
+     const openingTime = req.body.openingTime
+     const phone = req.body.phone
+    adminService.updateContact(address,openingTime,phone,contactId).then(data =>{
+        res.json(response({ success:"true", message:"success"}))
+    }).catch(err =>{
+        res.json(response({success:false, message:err}))
     })
 }
 
 module.exports = {
-    addMenu, addFood, updateMenu, updateFood, addContact, readContact
+    addMenu, addFood, updateMenu, updateFood, addContact, readContact,updateContact
 }
